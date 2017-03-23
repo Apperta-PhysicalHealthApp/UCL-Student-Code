@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import {Auth} from '../../providers/auth';
 import {LoginPage} from '../login/login';
+import {Http} from '@angular/http';
+import { viewTest } from '../viewTest/viewTest';
 
 @Component({
   selector: 'page-upcoming',
@@ -9,41 +11,96 @@ import {LoginPage} from '../login/login';
 })
 
 export class Upcoming {
-  username = '';
-  email= '';
+  
+  items = [];
+  testResult: any;
+  start: number;
+  count: number;
+  values: any;
 
-  constructor(private navCtrl: NavController, private auth: Auth) {
+  link = this.auth.mainUrl + 'tests/getbynext/';
+  
 
+  constructor(private navCtrl: NavController, private auth: Auth, private http: Http, private alertCtrl: AlertController, 
+              private loadingCtrl: LoadingController) {
+
+    this.start = 0;                                               //Position and ammount of tests which are being
+    this.count = 15;                                              //requested from the database
+
+    this.values = JSON.stringify({start: this.start, count: this.count});
+
+    this.http.post(this.link, this.values).map(res => res.json()).subscribe(
+      (data) => {
+
+        for (let i = 0; i < Math.min(this.count, data.length); i++) {           //if there are less tests than requested,
+          this.items.push(data[i]);                                             //display only da available ones
+        }
+
+      },
+      err => {
+        this.showError(err);
+      })
   }
 
-  items = [
-    'Blood Test',
-    'Rental Test',
-    'Some test',
-    'Some other test',
-    'Even more tests',
-    'How many',
-    'Tests',
-    'Are ',
-    'There',
-    'One more test',
-    'Blood test',
-    'Another blood test',
-    'Rental Test',
-    'Another rental test',
-    'More rental tests',
-    'More blood tests',
-    'Hey here is another test'
-  ];
+    doInfinite(infiniteScroll) {                                              //request tests on reaching the bottom
+                                                                              //of the page
+      this.start = this.start + this.count;
+      this.values = JSON.stringify({start: this.start, count: this.count});
 
-  itemSelected(item: string) {
-    console.log("Selected Item", item);
+      setTimeout(() => {
+
+        this.http.post(this.link, this.values).map(res => res.json()).subscribe(
+          (data) => {
+
+          if(data.length == 0){
+            infiniteScroll.enable(false);                               //if there are no more tests,
+          }                                                             //disable the infinite scroll
+
+          for (let i = 0; i < Math.min(this.count, data.length); i++) {
+              this.items.push(data[i]);
+          }
+
+          this.start = this.start - this.count + Math.min(this.count, data.length)      //Adjust the position at which
+                                                                                        //tests are being requested from the database
+          },
+          err => {
+            this.start = this.start - this.count;
+            this.showError(err);
+          })
+
+        infiniteScroll.complete();
+      }, 500);
+    }
+
+
+    sendToViewTest(id){                                                     //Send user to viewTest page along with the test id
+
+    setTimeout(() => {
+
+      let address = this.auth.mainUrl + 'tests/get/';
+      let payload = JSON.stringify({id: id})    
+
+      this.http.post(address, payload).map(res => res.json()).subscribe(
+        (data) => {
+
+          this.testResult = data;
+          this.navCtrl.push(viewTest, {result: this.testResult});
+            
+        },
+        err => {
+            this.showError(err);
+        })
+
+     })
   }
 
-  public logout(){
-    this.auth.logout().subscribe(succ => {
-      this.navCtrl.setRoot(LoginPage)
-    })
+  showError(text) {
+    let alert = this.alertCtrl.create({
+      title: 'Fail',
+      subTitle: text,
+      buttons: ['OK']
+    });
+    alert.present(prompt);
   }
 
 }

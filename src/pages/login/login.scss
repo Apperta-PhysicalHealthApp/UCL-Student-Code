@@ -1,14 +1,20 @@
 page-login {
 
+    //Set and style the background image
     .master{
-        
-        background-image: url('../../img/nhs-wings.jpg');
-        
-        background-color:rgba(73, 188, 170, 0.7);
-        // -webkit-background-size: 100%;
-        // -moz-background-size: 100%;
-        // background-size: 100%;
-        //background-color: transparent;     
+        background-image: url('../img/background.jpg');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .login-box{
+        position: relative;
+        top: 30%;
+    }
+
+    .item{
+        background-color:transparent;
+        color: #d4ebf2;   
     }
 
     #newAcc{
@@ -16,12 +22,20 @@ page-login {
         display:block;
         margin-left: auto; 
         margin-right: auto;
+        color: #d4ebf2;
     }
+
     #forgotPass{
         border:0px; 
         display:block; 
         margin-left: auto; 
         margin-right: auto;
+        color: #d4ebf2;
+    }
+    
+    #login{
+        color: #d4ebf2;
+        background-color: #5eb3ce;
     }
 
 }

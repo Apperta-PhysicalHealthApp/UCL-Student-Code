@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>
+      {{ param.name }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="name" padding>
+    <ion-card>
+  <ion-card-header>
+    {{ param.name }}
+  </ion-card-header>
+  <ion-card-content>
+    <h3>Next test date: {{ param.date }} </h3>
+    <br/>
+    <p> {{param.data}} </p>
+    <br/>
+    <p> {{param.message}} </p>
+    <br/>
+    <p>Date created: {{ param.date_created }} </p>
+  </ion-card-content>
+</ion-card>
+</ion-content>
+

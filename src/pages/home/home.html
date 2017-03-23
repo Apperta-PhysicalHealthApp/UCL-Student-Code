@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar color="dark">
     <ion-title>
-      Metabolic App
+     Janssen J
     </ion-title>
     <ion-buttons end>
       <button ion-button (click)="logout()">
@@ -12,31 +12,99 @@
 </ion-header>
 
 <ion-content>
-    <h3>Welcome, {{username}}!</h3>
-  <ion-row>
-    <ion-col></ion-col>
-    <ion-col width-67>
-      <img src="http://placehold.it/300x200"/>
-    </ion-col>
-    <ion-col></ion-col>
-  </ion-row>
 
-  <br/><br/>
+  <!-- Circular navigation elements -->
 
-  <ion-item-group>
+  <!--<ul class='circle-container'>-->
+    <!--<li>
+      <img id="cholesterol" id="s1" src="img/circular_nav/Image_0004_Layer-5.png">
+    </li>
+    <li>
+      <img id="cholesterol" id="s2" class="right" src="img/circular_nav/Image_0007_Layer-8.png">
+    </li>
+    <li>
+      <img id="cholesterol" id="s3" class="bot" src="img/circular_nav/Image_0008_Layer-9.png">
+    </li>
+    <li>
+      <img id="cholesterol" id="s4" class="bot" src="img/circular_nav/Image_0009_Layer-10.png">
+    </li>
+    <li>
+      <img id="cholesterol" id="s5" src="img/circular_nav/Image_0006_Layer-7.png">
+    </li>
+    <li>
+      <img id="cholesterol" id="s6" src="img/circular_nav/Image_0005_Layer-6.png">
+    </li>
+    <li>
+      <img id="cholesterol" id="s7" src="img/circular_nav/Image_0000_Layer-1.png">
+    </li>
+    <li>
+      <img id="cholesterol" id="s8" class="top" src="img/circular_nav/Image_0001_Layer-2.png">
+    </li>
+    <li>
+      <img id="cholesterol" id="s9" class="top" src="img/circular_nav/Image_0002_Layer-3.png">
+    </li>
+    <li>
+      <img id="cholesterol" id="s10" class="right" src="img/circular_nav/Image_0003_Layer-4.png">
+    </li>-->
+    <!--<li><div id="cholesterol" class="cbutton"  (click)="sendToViewTest(cholesterol.id)" [style.background-color]="cholesterol.color"></div></li>
+    <li><div id="lipids" class="cbutton" (click)="sendToViewTest(lipids.id)" [style.background-color]="lipids.color"></div></li>
+    <li><button id="prolactin" class="cbutton" (click)="sendToViewTest(prolactin.id)" [style.background-color]="prolactin.color" ion-button large>Prolactin</button></li>
+    <li><button id="renal" class="cbutton" (click)="sendToViewTest(renal.id)" [style.background-color]="renal.color" ion-button large>Renal <br/> Functions</button></li>
+    <li><button id="blood" class="cbutton" (click)="sendToViewTest(blood.id)" [style.background-color]="blood.color" ion-button large>Blood <br/> Pressure</button></li>
+    <li><button id="ecg" class="cbutton" (click)="sendToViewTest(ecg.id)" [style.background-color]="ecg.color" ion-button large>ECGs</button></li>
+    <li><button id="bmi" class="cbutton" (click)="sendToViewTest(bmi.id)" [style.background-color]="bmi.color" ion-button large>BMI</button></li>
+    <li><button id="sugar" class="cbutton" (click)="sendToViewTest(sugar.id)" [style.background-color]="sugar.color" ion-button large>Fasting <br/> Blood <br/> Sugar</button></li>
+    <li><button id="hba1c" class="cbutton" (click)="sendToViewTest(hba1c.id)"  [style.background-color]="hba1c.color" ion-button large>HbA1c</button></li>
+    <li><button id="liver" class="cbutton"  (click)="sendToViewTest(liver.id)" [style.background-color]="liver.color" ion-button large>Liver <br/> Functions</button></li>-->
+  
+  <div id="divWheelnav" data-wheelnav 
+    data-wheelnav-wheelradius="142"
+    data-wheelnav-navangle="90"
+    data-wheelnav-slicepath="DonutSlice"
+    data-wheelnav-rotateoff>
+<!--
+      <div data-wheelnav-navitemtext="Cholest."></div>
+      <div data-wheelnav-navitemtext="Lipids"></div>
+      <div data-wheelnav-navitemtext="Prolactin"></div>
+      <div data-wheelnav-navitemtext="Renal F."></div>
+      <div data-wheelnav-navitemtext="Blood Pr."></div>
+      <div data-wheelnav-navitemtext="ECG"></div>
+      <div data-wheelnav-navitemtext="BMI"></div>
+      <div data-wheelnav-navitemtext="Blood Sug."></div>
+      <div data-wheelnav-navitemtext="HbA1c"></div>
+      <div data-wheelnav-navitemtext="Liver F."></div>-->
+
+  </div>
+  
+  <!--</ul>-->
+
+  <!--<br/><br/>-->
+
+  <!-- Upcoming tests list (only the closest two tests) -->
+
+  <ion-item-group id="list">
     <ion-item-divider style="text-align: center" color="light">Upcoming Tests</ion-item-divider>
-    <ion-item (click)="test1()">Test1</ion-item>
-    <ion-item (click)="test2()">Test2</ion-item>
+    <!--<ion-item> one </ion-item>
+    <ion-item> two </ion-item>-->
+    <ion-item class="li-element date"  *ngFor="let item of items" (click)="sendToViewTest(item.id)">
+      <!--<ion-avatar item-left>
+          <div class="date">
+            <span class="day">{{ item.date.slice(8, 10) }}</span>
+            <span class="month">{{ item.date.slice(5, 7) }}</span>
+            <span class="year">{{ item.date.slice(0, 4) }}</span>
+          </div>
+        </ion-avatar> -->
+      <span class="day">{{ auth.dateChange(item.date) }}</span>
+    </ion-item>
     <ion-item style="text-align:center">
-    <button ion-button full outline (click)="send2()" style="border:0px; margin-left: auto; margin-right: auto; display: block">
-      View More <ion-icon style="margin-left: 5px; margin-top: 2px" name="arrow-forward"></ion-icon>
+    <button class="over" id="viewMore" ion-button full outline (click)="sendViewUpcomming()">
+      View More <ion-icon id="arrow" name="arrow-forward"></ion-icon>
     </button>
     </ion-item>
   </ion-item-group>
 
-  <ion-row style="position: fixed; bottom:0;">
-     <button ion-button class="submit-btn" full outline (click) ="send1()" >View Latest Test Results</button>
-     <!--<button ion-button class="submit-btn" full outline (click)="send2()" >Upcoming</button>-->
+  <ion-row id="latest">
+     <button ion-button class="submit-btn over" full outline (click) ="sendViewLatest()" >View Past Test Results</button>
   </ion-row>
 </ion-content>
 

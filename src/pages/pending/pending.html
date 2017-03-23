@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>
+      Pending page
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="name" padding>
+
+    <!-- Refresh template -->
+
+    <ion-refresher (ionRefresh)="refresh($event)">
+        <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+
+    <!-- Pending request and cancel button -->
+
+    <h3>Your request is pending...</h3>
+    <button ion-button (click)="cancel()" class="submit-btn" >Cancel Request</button>
+</ion-content>

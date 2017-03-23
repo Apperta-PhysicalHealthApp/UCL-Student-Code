@@ -7,9 +7,13 @@ import {RegisterPage} from '../pages/register/register';
 import { HomePage } from '../pages/home/home';
 import { Latest } from '../pages/latestTestResults/latest';
 import { Upcoming } from '../pages/upcomingTest/upcoming';
-import { Test1 } from '../pages/test1/test1';
-import { Test2 } from '../pages/test2/test2';
-// import { TabsPage } from '../pages/tabs/tabs';
+import { Request } from '../pages/createRequest/request';
+import { Pending } from '../pages/pending/pending';
+import { viewTest } from '../pages/viewTest/viewTest';
+import { DomainPage } from '../pages/domainPage/domainPage';
+import { DomainResult } from '../pages/domainResult/domainResult';
+import { nhsChoices } from '../pages/nhsChoices/nhsChoices';
+ 
 
 
 
@@ -21,12 +25,15 @@ import { Test2 } from '../pages/test2/test2';
     RegisterPage,
     Latest,
     Upcoming,
-    Test1,
-    Test2
-    // TabsPage
+    Request,
+    Pending,
+    viewTest,
+    DomainPage,
+    DomainResult,
+    nhsChoices
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -36,9 +43,12 @@ import { Test2 } from '../pages/test2/test2';
     RegisterPage,
     Latest,
     Upcoming,
-    Test1,
-    Test2
-    // TabsPage
+    Request,
+    Pending,
+    viewTest,
+    DomainPage,
+    DomainResult,
+    nhsChoices
   ],
   providers: [Auth]
 })

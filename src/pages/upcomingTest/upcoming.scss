@@ -1,0 +1,34 @@
+page-upcoming{
+    .date {
+  position: relative;
+  width: 50px;
+  font-family: Georgia, serif;
+  color: #999;
+  margin: 0 auto;
+ }
+ 
+.day, .month, .year {
+  position: absolute;
+  }
+ 
+.day { 
+  font-size: 25px;
+  top: 15px;
+  }
+ 
+.month { 
+  top: 0;
+  left: 0;  
+  font-size: 18px;
+  }
+ 
+.year { 
+  top: 15px;
+  right: 0;
+  font-size: 12px;
+  rotation: -90deg !important;
+  /* ** Hacks ** */
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);  
+  }
+}

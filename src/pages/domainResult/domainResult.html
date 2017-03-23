@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>
+      {{ name }}                          <!-- template for the domain name -->
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="name" padding>
+
+    <!-- Template for the line chart -->
+
+    <ion-card>
+      <ion-card-header>
+        Line Chart
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #lineCanvas></canvas>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Cycle through items and display each item's date and name-->
+
+     <ion-list>
+      <ion-item class="date" *ngFor="let i of items" (click)="sendToViewTest(i.id)">
+         <!--<ion-avatar item-left>-->
+          <!--<div class="date">
+            <span class="day">{{ i.date.slice(8, 10) }}</span>
+            <span class="month">{{ i.date.slice(5, 7) }}</span>
+            <span class="year">{{ i.date.slice(0, 4) }}</span>
+          </div>
+        </ion-avatar>-->
+        <span class="day">{{ auth.dateChange(i.date) }}</span>
+      </ion-item>
+    </ion-list>
+
+    <!-- When scrolled to the bottom of the page, display loading and call function "doInfinite($event)" -->
+
+ <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+   <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+ </ion-infinite-scroll>
+ 
+</ion-content>

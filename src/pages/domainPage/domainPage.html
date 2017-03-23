@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>
+      Past Test Categories
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="name" padding>
+
+    <ion-list inset>
+
+        <!-- Cycle through "items" and display each items's name. -->
+        
+        <ion-row *ngFor="let item of items">
+            <ion-col width-10>
+                <ion-icon (click)="infoPopup(item.name)" ios="ios-information-circle" md="md-information-circle"></ion-icon>
+            </ion-col>
+            <ion-col width-80>
+                
+                <button width ion-item (click)="loadTestResult(item.id, item.name)">    
+                    {{ item.name }}  <ion-icon style="float: right" ios="ios-arrow-forward" md="md-arrow-forward"></ion-icon>
+                </button>
+            </ion-col>
+        </ion-row>
+
+        <button ion-item color="light" (click)="loadAll()">
+            View All Tests
+        </button> 
+    </ion-list>
+ 
+</ion-content>
+

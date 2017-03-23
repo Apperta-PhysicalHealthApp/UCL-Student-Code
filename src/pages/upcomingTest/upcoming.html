@@ -3,19 +3,29 @@
     <ion-title>
       Upcoming Tests
     </ion-title>
-    <ion-buttons end>
-      <button ion-button (click)="logout()">
-        <ion-icon name="log-out"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="name" padding>
-    <ion-list inset>
-    <button ion-item *ngFor="let item of items" (click)="itemSelected(item)">
-      {{ item }}
-    </button>
-  </ion-list>
+     <ion-list>
+      <ion-item *ngFor="let i of items" (click)="sendToViewTest(i.id)">
+        <ion-avatar item-left>
+          <div class="date">
+            <span class="day">{{ i.date.slice(8, 10) }}</span>
+            <span class="month">{{ i.date.slice(5, 7) }}</span>
+            <span class="year">{{ i.date.slice(0, 4) }}</span>
+          </div>
+        </ion-avatar>   
+         {{ i.name }}
+      </ion-item>
+    </ion-list>
+
+ <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+   <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+ </ion-infinite-scroll>
+ 
 </ion-content>
 
