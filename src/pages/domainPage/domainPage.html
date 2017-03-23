@@ -13,11 +13,10 @@
         <!-- Cycle through "items" and display each items's name. -->
         
         <ion-row *ngFor="let item of items">
-            <ion-col width-10>
+            <ion-col class="iconI" width-10>
                 <ion-icon (click)="infoPopup(item.name)" ios="ios-information-circle" md="md-information-circle"></ion-icon>
             </ion-col>
-            <ion-col width-80>
-                
+            <ion-col width-90>
                 <button width ion-item (click)="loadTestResult(item.id, item.name)">    
                     {{ item.name }}  <ion-icon style="float: right" ios="ios-arrow-forward" md="md-arrow-forward"></ion-icon>
                 </button>
