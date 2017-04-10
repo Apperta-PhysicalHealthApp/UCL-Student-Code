@@ -5,6 +5,7 @@ import {LoginPage} from '../login/login';
 import {Http} from '@angular/http';
 import { viewTest } from '../viewTest/viewTest';
 
+
 @Component({
   selector: 'page-upcoming',
   templateUrl: 'upcoming.html'
@@ -40,6 +41,7 @@ export class Upcoming {
       err => {
         this.showError(err);
       })
+
   }
 
     doInfinite(infiniteScroll) {                                              //request tests on reaching the bottom
