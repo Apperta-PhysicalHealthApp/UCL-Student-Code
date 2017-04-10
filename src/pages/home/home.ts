@@ -45,12 +45,28 @@ export class HomePage {
     // this.username = info.name;
 
     let link = this.auth.mainUrl + 'tests/upcoming/';
+    let linkUpcoming = this.auth.mainUrl + 'tests/getbynext/';
+
+    let start = 0;                                               //Position and ammount of tests which are being
+    let count = 2;                                              //requested from the database
+
+    let valuesUpcoming = JSON.stringify({start: start, count: count});
     //let values = JSON.stringify({last_updated: '2017-03-01', verbose: true})
+
+
+    this.http.post(linkUpcoming, valuesUpcoming).map(res => res.json()).subscribe(
+      (data) => {
+          this.items = data;
+          this.items = this.items.slice(0, 2);
+      },
+      err => {
+        this.showError(err);
+      }
+    )
+
 
     this.http.get(link).map(res => res.json()).subscribe(
       (data) => {
-        this.items = data;
-        this.items = this.items.slice(0, 2);
 
 
         for(let i = 0; i < data.length; i++){
@@ -228,8 +244,8 @@ export class HomePage {
 
   showError(text) {
     let alert = this.alertCtrl.create({
-      title: 'Fail',
-      subTitle: text,
+      title: 'Status',
+      subTitle: text._body,
       buttons: ['OK']
     });
     alert.present(prompt);

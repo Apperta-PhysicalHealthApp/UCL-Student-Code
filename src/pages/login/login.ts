@@ -32,6 +32,11 @@ export class LoginPage {
     this.navCtrl.push(RegisterPage);
   }
 
+  public forgottenPass(){
+    window.open('http://metabolicapp.azurewebsites.net/password/reset/', '_system');
+  }
+
+
   public login() {
 
     this.showLoading()
@@ -39,6 +44,8 @@ export class LoginPage {
     let link = this.auth.mainUrl + 'login/';
     let values = JSON.stringify({username: this.registerCredentials.username,
                               password: this.registerCredentials.password});
+
+
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
@@ -83,8 +90,8 @@ export class LoginPage {
     });
  
     let alert = this.alertCtrl.create({
-      title: 'Fail',
-      subTitle: text,
+      title: 'Status',
+      subTitle: text._body,
       buttons: ['OK']
     });
     alert.present(prompt);

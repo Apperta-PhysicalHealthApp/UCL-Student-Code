@@ -120,8 +120,8 @@ export class Pending {
       });
   
       let alert = this.alertCtrl.create({
-        title: 'Fail',
-        subTitle: text,
+        title: 'Status',
+        subTitle: text._body,
         buttons: ['OK']
       });
       alert.present(prompt);

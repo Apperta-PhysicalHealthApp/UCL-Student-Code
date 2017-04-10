@@ -30,10 +30,11 @@ export class DomainResult {
   values: any;
   items = [];
   allItems = [];
+  allDates = [];
   name: string;
 
   link = this.auth.mainUrl + 'tests/getbytest/';
-  linkAll = this.auth.mainUrl + "tests/DEBUGgetbytest/";
+  linkAll = this.auth.mainUrl + "tests/getbytest/complete/";
   
   constructor(private navCtrl: NavController, private http: Http, public navParams: NavParams,private alertCtrl: AlertController, 
               private loadingCtrl: LoadingController, private auth: Auth) {
@@ -57,23 +58,38 @@ export class DomainResult {
       err => {
         this.showError(err);
       })
+
+      let valuesAll = JSON.stringify({start: 0, count: 100, test_type: this.testType});
                                                 
-    this.http.post(this.linkAll, this.values).map(res => res.json()).subscribe(      //request all tests from the database
+    this.http.post(this.linkAll, valuesAll).map(res => res.json()).subscribe(      //request all tests from the database
       (data) => {
 
+        let month;
+        let date;
+
         for (let i = 0; i < Math.min(this.count, data.length); i++) {          
-          this.allItems.push(parseInt(data[i].data.split(" ")[1]));                  //split the recieved string by space
-        }                                                                            //and take the second element which is a number
+          this.allItems.push(parseInt(data[i].data));                  //split the recieved string by space
+                                                                                    //and take the second element which is a number       
+          if(month != data[i].date_created){
+            month = data[i].date_created;
+            date = auth.dateChange(month);
+            date = date.split(" ")[0];
+            this.allDates.push(date); 
+         }
+         else{
+           this.allDates.push(" "); 
+         } 
+        }                           
 
         this.lineChart = new Chart(this.lineCanvas.nativeElement, {                  //line chart inicialisation and options
  
           type: 'line',
           data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            labels: this.allDates,
             datasets: [
               {
                 label: this.name + " Test Results",
-                fill: false,
+                fill: true,
                 lineTension: 0.1,
                 backgroundColor: "rgba(75,192,192,0.4)",
                 borderColor: "rgba(75,192,192,1)",
@@ -99,7 +115,7 @@ export class DomainResult {
 
       },
       err => {
-        this.showError(err);
+        // this.showError(err);
       })
   }
 
@@ -154,8 +170,8 @@ export class DomainResult {
 
   showError(text) {
     let alert = this.alertCtrl.create({
-      title: 'Fail',
-      subTitle: text,
+      title: 'Status',
+      subTitle: text._body,
       buttons: ['OK']
     });
     alert.present(prompt);

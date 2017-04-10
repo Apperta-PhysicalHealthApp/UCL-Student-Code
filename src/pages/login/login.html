@@ -21,12 +21,16 @@
       <ion-row>
         <ion-col class="signup-col">
           <button ion-button id="login" class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Login</button>
-          <button ion-button id="newAcc" class="register-btn" full outline  (click)="createAccount()">Create New Account</button>
-          <button ion-button id="forgotPass" (click)="launch('https://www.google.com')" full outline >Forgotten password</button>
         </ion-col>
-      </ion-row>
-      
+      </ion-row>  
     </form>
+    <ion-row>
+        <ion-col>
+          <button ion-button id="newAcc" class="register-btn" full outline  (click)="createAccount()">Create New Account</button>
+          <button ion-button id="forgotPass" (click)="forgottenPass()" full outline >Forgotten password</button>
+        </ion-col>
+    </ion-row>
+    
   </div>
 </ion-content>
 

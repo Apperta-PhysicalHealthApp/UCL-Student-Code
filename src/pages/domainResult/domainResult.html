@@ -22,6 +22,7 @@
     <!-- Cycle through items and display each item's date and name-->
 
      <ion-list>
+       <ion-item-divider style="text-align: center" color="light">Date, Tests were created on</ion-item-divider>
       <ion-item class="date" *ngFor="let i of items" (click)="sendToViewTest(i.id)">
          <!--<ion-avatar item-left>-->
           <!--<div class="date">
@@ -30,7 +31,7 @@
             <span class="year">{{ i.date.slice(0, 4) }}</span>
           </div>
         </ion-avatar>-->
-        <span class="day">{{ auth.dateChange(i.date) }}</span>
+        <span class="day">{{ auth.dateChange(i.date_created) }}</span>
       </ion-item>
     </ion-list>
 

@@ -1,0 +1,107 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "wheelnav",
+        "scope": null,
+        "escapedName": "wheelnav",
+        "name": "wheelnav",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Users\\HP\\workshop\\ionicApp\\ionic2-charts"
+    ]
+  ],
+  "_from": "wheelnav@latest",
+  "_id": "wheelnav@1.7.0",
+  "_inCache": true,
+  "_location": "/wheelnav",
+  "_nodeVersion": "0.12.1",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/wheelnav-1.7.0.tgz_1478141761823_0.8214742804411799"
+  },
+  "_npmUser": {
+    "name": "softwaretailoring",
+    "email": "gabor.berkesi@softwaretailoring.net"
+  },
+  "_npmVersion": "2.5.1",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "wheelnav",
+    "scope": null,
+    "escapedName": "wheelnav",
+    "name": "wheelnav",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/wheelnav/-/wheelnav-1.7.0.tgz",
+  "_shasum": "ea73b7aef28f51f49ba52f23f1ca944049e9a975",
+  "_shrinkwrap": null,
+  "_spec": "wheelnav",
+  "_where": "C:\\Users\\HP\\workshop\\ionicApp\\ionic2-charts",
+  "author": {
+    "name": "Gábor Berkesi",
+    "email": "gabor.berkesi@softwaretailoring.net",
+    "url": "http://softwaretailoring.net"
+  },
+  "bugs": {
+    "url": "https://github.com/softwaretailoring/wheelnav/issues"
+  },
+  "dependencies": {},
+  "description": "Animated wheel navigation JavaScript library based on Raphaël.js (SVG/VML). It can be a pie menu (radial menu, circular menu) and many more.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "ea73b7aef28f51f49ba52f23f1ca944049e9a975",
+    "tarball": "https://registry.npmjs.org/wheelnav/-/wheelnav-1.7.0.tgz"
+  },
+  "files": [
+    "js/dist/wheelnav.js",
+    "js/dist/wheelnav.min.js",
+    "js/dist/wheelnav.min.js.map",
+    "js/dist/core/wheelnav.js",
+    "js/dist/core/wheelnav.min.js",
+    "js/dist/core/wheelnav.min.js.map",
+    "js/dist/raphael.min.js",
+    "js/dist/raphael.icons.min.js",
+    "js/dist/raphael.license.txt",
+    "js/dist/welcome.html",
+    "LICENSE"
+  ],
+  "gitHead": "e1c0199cbee21cb50a077e2925c640b7abf510cf",
+  "homepage": "http://wheelnavjs.softwaretailoring.net",
+  "keywords": [
+    "animated",
+    "navigation",
+    "pie-menu",
+    "radial-menu",
+    "circular-menu",
+    "SVG",
+    "Raphael",
+    "wheel"
+  ],
+  "license": "MIT",
+  "main": "js/dist/wheelnav.js",
+  "maintainers": [
+    {
+      "name": "softwaretailoring",
+      "email": "gabor.berkesi@softwaretailoring.net"
+    }
+  ],
+  "name": "wheelnav",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/softwaretailoring/wheelnav.git"
+  },
+  "scripts": {},
+  "version": "1.7.0"
+}

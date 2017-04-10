@@ -15,12 +15,13 @@
 
 <ion-content class="name" padding>
   <ion-list>
+    <ion-item-divider style="text-align: center" color="light">Tests ordered by date created</ion-item-divider>
     <ion-item *ngFor="let i of items" (click)="sendToViewTest(i.id)">
       <ion-avatar item-left>
           <div class="date">
-            <span class="day">{{ i.date.slice(8, 10) }}</span>
-            <span class="month">{{ i.date.slice(5, 7) }}</span>
-            <span class="year">{{ i.date.slice(0, 4) }}</span>
+            <span class="day">{{ i.date_created.slice(8, 10) }}</span>
+            <span class="month">{{ i.date_created.slice(5, 7) }}</span>
+            <span class="year">{{ i.date_created.slice(0, 4) }}</span>
           </div>
         </ion-avatar> 
         {{ i.name }}

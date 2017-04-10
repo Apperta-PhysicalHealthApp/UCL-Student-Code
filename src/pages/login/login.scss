@@ -8,8 +8,12 @@ page-login {
     }
 
     .login-box{
-        position: relative;
+        position: absolute;
         top: 30%;
+        
+        width: 85%;
+        margin: auto;
+        // change
     }
 
     .item{

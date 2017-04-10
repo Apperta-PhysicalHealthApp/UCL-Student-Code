@@ -66,6 +66,7 @@ export class Upcoming {
           err => {
             this.start = this.start - this.count;
             this.showError(err);
+            // this.showError(JSON.stringify(err));
           })
 
         infiniteScroll.complete();
@@ -88,6 +89,7 @@ export class Upcoming {
             
         },
         err => {
+            // let error = JSON.stringify(err);
             this.showError(err);
         })
 
@@ -96,8 +98,8 @@ export class Upcoming {
 
   showError(text) {
     let alert = this.alertCtrl.create({
-      title: 'Fail',
-      subTitle: text,
+      title: 'Status',
+      subTitle: text._body,
       buttons: ['OK']
     });
     alert.present(prompt);
