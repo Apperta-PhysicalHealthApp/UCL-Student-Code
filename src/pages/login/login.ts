@@ -6,6 +6,7 @@ import { HomePage } from '../home/home';
 import { Request } from '../createRequest/request';
 import { Pending } from '../pending/pending';
 import {Http, Headers} from '@angular/http';
+import { Network } from 'ionic-native';
 
 
 
@@ -26,7 +27,23 @@ export class LoginPage {
               private loadingCtrl: LoadingController,
               private http: Http) 
               {
+                  this.auth.online = this.auth.checkOnline();
 
+                  let alert = this.alertCtrl.create({
+      title: 'network',
+      subTitle: Network.type,
+      buttons: ['OK']
+    });
+    alert.present(prompt);
+
+                  if(this.auth.online == false){
+                      let alert = this.alertCtrl.create({
+                        title: 'Status',
+                        subTitle: "You are currently offline. You can use the application to view the last localy stored tests, however we advise you to connect online to retrieve any new updates ",
+                        buttons: ['OK']
+                      });
+                      alert.present(prompt);
+                  }
               }
 
   public createAccount(){
@@ -42,6 +59,9 @@ export class LoginPage {
 
     this.showLoading()
 
+    this.auth.initDB();
+
+
     let link = this.auth.mainUrl + 'login/';
     let values = JSON.stringify({username: this.registerCredentials.username,
                               password: this.registerCredentials.password});
@@ -49,6 +69,8 @@ export class LoginPage {
 
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
+
+    if(this.auth.online){
 
     setTimeout(() => {
 
@@ -60,6 +82,9 @@ export class LoginPage {
           this.loading.dismiss();
 
           if(data.has_clinician == true){               //if the user already has a clinician, redirect him to the home page
+            
+            this.auth.db_login(this.registerCredentials.username, this.registerCredentials.password);
+            
             this.navCtrl.setRoot(HomePage);
           }
           else if(data.pending_request == true){        //if the user has only a pending request, send him to the Pending page
@@ -75,7 +100,22 @@ export class LoginPage {
         this.showError(error);
       });
     });
+
+  }else{
+
+      if(this.auth.loginOffline(this.registerCredentials.username, this.registerCredentials.password)){
+        this.navCtrl.setRoot(HomePage);
+      }else{
+            let alert = this.alertCtrl.create({
+              title: 'Status',
+              subTitle: "Credentials do not match those stored on offline system",
+              buttons: ['OK']
+            });
+            alert.present(prompt);
+          }
+    }
   }
+
 
   showLoading() {                                 //Loading message using LoadingController
     this.loading = this.loadingCtrl.create({

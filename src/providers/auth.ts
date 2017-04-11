@@ -6,6 +6,7 @@ import {Storage} from '@ionic/storage';
 import { NavController, NavParams, AlertController} from 'ionic-angular'; 
 import * as PouchDB from 'pouchdb';  
 import cordovaSqlitePlugin from 'pouchdb-adapter-cordova-sqlite';
+import { Network } from 'ionic-native';
 
 import 'rxjs/add/operator/map';
 
@@ -23,20 +24,66 @@ export class User {
 @Injectable()
 export class Auth {
   
-  private _db;
+  public _db;
   private _credentials;
   local: any;
 
   initDB() {
         PouchDB.plugin(cordovaSqlitePlugin);
-        this._db = new PouchDB('credentials.db', { adapter: 'cordova-sqlite' });
+        this._db = new PouchDB('data.db', { adapter: 'cordova-sqlite' });
     }
 
   add(credentials){
-    return this._db.post(credentials);
+    return this._db.put(credentials);
+  }
+
+  db_login(username, password){
+    this._db.get('credentials').then(doc => {
+
+      if(doc.username != username || doc.password != password){
+        this._db.destroy();
+
+        this.initDB();
+
+        this._db.put({
+          _id: "credentials",
+          username: username,
+          password: password
+        })
+      }
+    })
+    .catch(err => {
+      this._db.put({
+        _id: "credentials",
+        username: username,
+        password: password
+      })
+    })
+  }
+
+  loginOffline(username, password){
+    this._db.get('credentials').then(doc => {
+      if(doc.username == username || doc.password == password){
+        return true;
+      }else{
+        return false;
+      }
+    })
+    .catch(err => {
+      return false;
+    })
+  }
+
+  checkOnline(){
+    if(Network.type != "none"){
+        return true;
+    }else{
+        return false;
+    }
   }
 
   public mainUrl: string = "http://metabolicapp.azurewebsites.net/patient/";
+  public online: boolean;
 
   constructor(private http: Http, private alertCtrl: AlertController) {
 
@@ -138,7 +185,7 @@ export class Auth {
 
             if(data.success == true){
 
-              this.local.clear();
+              // this.local.clear();
 
               // this.currentUser = null;
               observer.next(true);

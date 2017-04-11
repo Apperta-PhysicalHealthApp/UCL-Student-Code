@@ -43,6 +43,7 @@ export class HomePage {
               private loadingCtrl: LoadingController, private auth: Auth, private http: Http) {
     // let info = this.auth.getUserInfo();
     // this.username = info.name;
+      
 
     let link = this.auth.mainUrl + 'tests/upcoming/';
     let linkUpcoming = this.auth.mainUrl + 'tests/getbynext/';
@@ -190,6 +191,16 @@ export class HomePage {
   }
 
   sendToViewTest(id){
+
+      this.auth._db.get('credentials').then( doc => {
+        let alert = this.alertCtrl.create({
+      title: 'doc',
+      subTitle: JSON.stringify(doc),
+      buttons: ['OK']
+    });
+    alert.present(prompt);
+      })
+ 
     
     if(id == -1){
       return;
