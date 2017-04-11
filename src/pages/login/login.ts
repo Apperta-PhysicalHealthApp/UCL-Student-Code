@@ -6,7 +6,7 @@ import { HomePage } from '../home/home';
 import { Request } from '../createRequest/request';
 import { Pending } from '../pending/pending';
 import {Http, Headers} from '@angular/http';
-import { Storage } from '@ionic/storage';
+
 
 
 @Component({
@@ -24,7 +24,7 @@ export class LoginPage {
   constructor(private navCtrl: NavController, private auth: Auth, 
               private alertCtrl: AlertController, 
               private loadingCtrl: LoadingController,
-              private http: Http, private storage: Storage) 
+              private http: Http) 
               {
 
               }
@@ -58,11 +58,6 @@ export class LoginPage {
 
           this.data = data;
           this.loading.dismiss();
-
-          this.storage.ready().then((val) => {
-              this.storage.set("username", this.registerCredentials.username)
-              this.storage.set("password", this.registerCredentials.password)
-          })
 
           if(data.has_clinician == true){               //if the user already has a clinician, redirect him to the home page
             this.navCtrl.setRoot(HomePage);

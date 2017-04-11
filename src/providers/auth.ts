@@ -3,7 +3,9 @@ import { Http, Headers } from '@angular/http'
 import { Observable } from 'rxjs/Observable';
 import { LoginPage } from '../pages/login/login';
 import {Storage} from '@ionic/storage';
-import { NavController, NavParams, AlertController} from 'ionic-angular';
+import { NavController, NavParams, AlertController} from 'ionic-angular'; 
+import * as PouchDB from 'pouchdb';  
+import cordovaSqlitePlugin from 'pouchdb-adapter-cordova-sqlite';
 
 import 'rxjs/add/operator/map';
 
@@ -20,34 +22,46 @@ export class User {
 
 @Injectable()
 export class Auth {
-  currentUser: User;
+  
+  private _db;
+  private _credentials;
   local: any;
+
+  initDB() {
+        PouchDB.plugin(cordovaSqlitePlugin);
+        this._db = new PouchDB('credentials.db', { adapter: 'cordova-sqlite' });
+    }
+
+  add(credentials){
+    return this._db.post(credentials);
+  }
+
   public mainUrl: string = "http://metabolicapp.azurewebsites.net/patient/";
 
   constructor(private http: Http, private alertCtrl: AlertController) {
-    this.local = new Storage(['localstorage']);
+
   }
 
-  public login(credentials){
+  // public login(credentials){
 
-    // let link = 'http://13.81.70.148:8000/patient/login/';
-    // let values = JSON.stringify({username: credentials.username,
-    //                               password: credentials.password});
+  //   // let link = 'http://13.81.70.148:8000/patient/login/';
+  //   // let values = JSON.stringify({username: credentials.username,
+  //   //                               password: credentials.password});
 
     
-    if(credentials.username === null || credentials.password === null){
-      return Observable.throw("Please insert email and password.")
-    }else{
-      //return this.http.post
+  //   if(credentials.username === null || credentials.password === null){
+  //     return Observable.throw("Please insert email and password.")
+  //   }else{
+  //     //return this.http.post
 
-      return Observable.create(observer => {
-        let access = (credentials.password === "pass", credentials.email ="email")
-        this.currentUser = new User('Kiran/Yihang', 'Admin@gmail.com')
-        observer.next(access);
-        observer.complete();
-      })
-    }
-  }
+  //     return Observable.create(observer => {
+  //       let access = (credentials.password === "pass", credentials.email ="email")
+  //       this.currentUser = new User('Kiran/Yihang', 'Admin@gmail.com')
+  //       observer.next(access);
+  //       observer.complete();
+  //     })
+  //   }
+  // }
 
   public register(credentials){
     if (credentials.email === null || credentials.password === null || credentials.fname === null ||
@@ -61,9 +75,9 @@ export class Auth {
     }
   }
 
-  public getUserInfo() : User {
-    return this.currentUser;
-  }
+  // public getUserInfo() : User {
+  //   return this.currentUser;
+  // }
 
   public dateChange(date){
     let day = date.slice(8, 10);
@@ -126,7 +140,7 @@ export class Auth {
 
               this.local.clear();
 
-              this.currentUser = null;
+              // this.currentUser = null;
               observer.next(true);
               observer.complete();
 

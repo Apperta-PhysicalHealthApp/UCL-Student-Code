@@ -13,7 +13,6 @@ import { viewTest } from '../pages/viewTest/viewTest';
 import { DomainPage } from '../pages/domainPage/domainPage';
 import { DomainResult } from '../pages/domainResult/domainResult';
 import { nhsChoices } from '../pages/nhsChoices/nhsChoices';
-import { Storage } from '@ionic/storage';
 
 
 @NgModule({
@@ -49,6 +48,6 @@ import { Storage } from '@ionic/storage';
     DomainResult,
     nhsChoices
   ],
-  providers: [Auth, Storage]
+  providers: [Auth]
 })
 export class AppModule {}
