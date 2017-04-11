@@ -30,6 +30,9 @@
         },
         "cordova-plugin-sqlite-2": {
             "PACKAGE_NAME": "com.ionicframework.metabolicapp818736"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.ionicframework.metabolicapp818736"
         }
     },
     "dependent_plugins": {}

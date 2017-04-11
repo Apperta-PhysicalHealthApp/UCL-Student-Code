@@ -31,6 +31,10 @@
                         {
                             "xml": "<feature name=\"SQLitePlugin\"><param name=\"android-package\" value=\"io.sqlc.SQLitePlugin\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -40,6 +44,16 @@
                     "/*": [
                         {
                             "xml": "<feature name=\"SQLitePlugin\"><param name=\"android-package\" value=\"com.nolanlawson.cordova.sqlite.SQLitePlugin\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "AndroidManifest.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
                             "count": 1
                         }
                     ]
@@ -70,6 +84,9 @@
             "PACKAGE_NAME": "com.ionicframework.metabolicapp818736"
         },
         "cordova-plugin-sqlite-2": {
+            "PACKAGE_NAME": "com.ionicframework.metabolicapp818736"
+        },
+        "cordova-plugin-network-information": {
             "PACKAGE_NAME": "com.ionicframework.metabolicapp818736"
         }
     },
@@ -123,6 +140,23 @@
             "clobbers": [
                 "sqlitePlugin"
             ]
+        },
+        {
+            "id": "cordova-plugin-network-information.network",
+            "file": "plugins/cordova-plugin-network-information/www/network.js",
+            "pluginId": "cordova-plugin-network-information",
+            "clobbers": [
+                "navigator.connection",
+                "navigator.network.connection"
+            ]
+        },
+        {
+            "id": "cordova-plugin-network-information.Connection",
+            "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+            "pluginId": "cordova-plugin-network-information",
+            "clobbers": [
+                "Connection"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -133,6 +167,7 @@
         "cordova-plugin-whitelist": "1.3.1",
         "ionic-plugin-keyboard": "2.2.1",
         "cordova-sqlite-storage": "2.0.3",
-        "cordova-plugin-sqlite-2": "1.0.4"
+        "cordova-plugin-sqlite-2": "1.0.4",
+        "cordova-plugin-network-information": "1.3.2"
     }
 }

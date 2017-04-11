@@ -6,8 +6,7 @@ import {Storage} from '@ionic/storage';
 import { NavController, NavParams, AlertController} from 'ionic-angular'; 
 import * as PouchDB from 'pouchdb';  
 import cordovaSqlitePlugin from 'pouchdb-adapter-cordova-sqlite';
-import { Network } from 'ionic-native';
-
+import { Network } from '@ionic-native/network';
 import 'rxjs/add/operator/map';
 
 export class User {
@@ -62,20 +61,21 @@ export class Auth {
   }
 
   loginOffline(username, password){
+    
     this._db.get('credentials').then(doc => {
-      if(doc.username == username || doc.password == password){
-        return true;
+      if(doc.username == username && doc.password == password){
+          return true;
       }else{
-        return false;
+          return false;
       }
     })
     .catch(err => {
-      return false;
+        return false
     })
   }
 
   checkOnline(){
-    if(Network.type != "none"){
+    if(this.network.type != "none"){
         return true;
     }else{
         return false;
@@ -85,7 +85,7 @@ export class Auth {
   public mainUrl: string = "http://metabolicapp.azurewebsites.net/patient/";
   public online: boolean;
 
-  constructor(private http: Http, private alertCtrl: AlertController) {
+  constructor(private http: Http, private alertCtrl: AlertController, private network: Network) {
 
   }
 
@@ -185,9 +185,6 @@ export class Auth {
 
             if(data.success == true){
 
-              // this.local.clear();
-
-              // this.currentUser = null;
               observer.next(true);
               observer.complete();
 
@@ -198,6 +195,9 @@ export class Auth {
                 buttons: ['OK']
               });
               alert.present(prompt);
+
+              observer.next(true);
+              observer.complete();
             }
         },
         err => {
@@ -207,6 +207,9 @@ export class Auth {
                 buttons: ['OK']
               });
               alert.present(prompt);
+
+              observer.next(true);
+              observer.complete();
         })
     })
   }

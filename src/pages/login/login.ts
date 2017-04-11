@@ -6,8 +6,7 @@ import { HomePage } from '../home/home';
 import { Request } from '../createRequest/request';
 import { Pending } from '../pending/pending';
 import {Http, Headers} from '@angular/http';
-import { Network } from 'ionic-native';
-
+import { Network } from '@ionic-native/network';
 
 
 @Component({
@@ -25,25 +24,13 @@ export class LoginPage {
   constructor(private navCtrl: NavController, private auth: Auth, 
               private alertCtrl: AlertController, 
               private loadingCtrl: LoadingController,
-              private http: Http) 
+              private http: Http, private network: Network) 
               {
                   this.auth.online = this.auth.checkOnline();
 
-                  let alert = this.alertCtrl.create({
-      title: 'network',
-      subTitle: Network.type,
-      buttons: ['OK']
-    });
-    alert.present(prompt);
-
-                  if(this.auth.online == false){
-                      let alert = this.alertCtrl.create({
-                        title: 'Status',
-                        subTitle: "You are currently offline. You can use the application to view the last localy stored tests, however we advise you to connect online to retrieve any new updates ",
-                        buttons: ['OK']
-                      });
-                      alert.present(prompt);
-                  }
+                  this.network.onchange().subscribe(() => {
+                      this.auth.online = this.auth.checkOnline();
+                  });
               }
 
   public createAccount(){
@@ -53,7 +40,6 @@ export class LoginPage {
   public forgottenPass(){
     window.open('http://metabolicapp.azurewebsites.net/password/reset/', '_system');
   }
-
 
   public login() {
 
@@ -70,42 +56,48 @@ export class LoginPage {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    if(this.auth.online){
 
-    setTimeout(() => {
+      this.auth.online = this.auth.checkOnline();
 
-    this.http.post(link, values, {headers: headers}).map(res => res.json()).subscribe(      //Send user name and password
+      if(this.auth.online){
+
+      setTimeout(() => {
+
+      this.http.post(link, values, {headers: headers}).map(res => res.json()).subscribe(      //Send user name and password
+          
+        (data) => {                         //receive token from database with values "pending_request" and "has_clinician"
+
+            this.data = data;
+            this.loading.dismiss();
+
+            if(data.has_clinician == true){               //if the user already has a clinician, redirect him to the home page
+              
+              this.auth.db_login(this.registerCredentials.username, this.registerCredentials.password);
+              
+              this.navCtrl.setRoot(HomePage);
+            }
+            else if(data.pending_request == true){        //if the user has only a pending request, send him to the Pending page
+              this.navCtrl.push(Pending)
+            }
+            else if(data.pending_request == false){       //if the user doesn't have a pending request, send him to the Request page
+              this.navCtrl.push(Request);  
+            }
         
-      (data) => {                         //receive token from database with values "pending_request" and "has_clinician"
-
-          this.data = data;
+        },
+        (error) => {
           this.loading.dismiss();
-
-          if(data.has_clinician == true){               //if the user already has a clinician, redirect him to the home page
-            
-            this.auth.db_login(this.registerCredentials.username, this.registerCredentials.password);
-            
-            this.navCtrl.setRoot(HomePage);
-          }
-          else if(data.pending_request == true){        //if the user has only a pending request, send him to the Pending page
-            this.navCtrl.push(Pending)
-          }
-          else if(data.pending_request == false){       //if the user doesn't have a pending request, send him to the Request page
-            this.navCtrl.push(Request);  
-          }
-      
-      },
-      (error) => {
-        this.loading.dismiss();
-        this.showError(error);
+          this.showError(error);
+        });
       });
-    });
 
-  }else{
+    }else{
 
-      if(this.auth.loginOffline(this.registerCredentials.username, this.registerCredentials.password)){
-        this.navCtrl.setRoot(HomePage);
-      }else{
+        this.loading.dismiss();
+
+        this.auth._db.get('credentials').then(doc => {
+          if(doc.username == this.registerCredentials.username && doc.password == this.registerCredentials.password){
+              this.navCtrl.setRoot(HomePage);
+          }else{
             let alert = this.alertCtrl.create({
               title: 'Status',
               subTitle: "Credentials do not match those stored on offline system",
@@ -113,7 +105,27 @@ export class LoginPage {
             });
             alert.present(prompt);
           }
-    }
+        })
+        .catch(err => {
+            let alert = this.alertCtrl.create({
+              title: 'Status',
+              subTitle: "Odd error",
+              buttons: ['OK']
+            });
+            alert.present(prompt);
+        })
+
+          // if(this.auth.loginOffline(this.registerCredentials.username, this.registerCredentials.password)){
+          //   this.navCtrl.setRoot(HomePage);
+          // }else{
+          //   let alert = this.alertCtrl.create({
+          //     title: 'Status',
+          //     subTitle: "Credentials do not match those stored on offline system",
+          //     buttons: ['OK']
+          //   });
+          //   alert.present(prompt);
+          // }
+      }
   }
 
 
