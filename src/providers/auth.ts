@@ -4,7 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { LoginPage } from '../pages/login/login';
 import {Storage} from '@ionic/storage';
 import { NavController, NavParams, AlertController} from 'ionic-angular'; 
-import * as PouchDB from 'pouchdb';  
+import * as PouchDB from 'pouchdb';
+import CryptoPouch from 'crypto-pouch';
 import cordovaSqlitePlugin from 'pouchdb-adapter-cordova-sqlite';
 import { Network } from '@ionic-native/network';
 import 'rxjs/add/operator/map';
@@ -29,7 +30,9 @@ export class Auth {
 
   initDB() {
         PouchDB.plugin(cordovaSqlitePlugin);
+        PouchDB.plugin(CryptoPouch);
         this._db = new PouchDB('data.db', { adapter: 'cordova-sqlite' });
+        this._db.crypto("password");
     }
 
   add(credentials){
@@ -40,15 +43,17 @@ export class Auth {
     this._db.get('credentials').then(doc => {
 
       if(doc.username != username || doc.password != password){
-        this._db.destroy();
 
-        this.initDB();
+        this._db.destroy().then(() => {
+          this.initDB();
 
-        this._db.put({
-          _id: "credentials",
-          username: username,
-          password: password
+          this._db.put({
+            _id: "credentials",
+            username: username,
+            password: password
+          })
         })
+
       }
     })
     .catch(err => {
@@ -80,6 +85,14 @@ export class Auth {
     }else{
         return false;
     }
+  }
+
+  dataEncrypt(data){
+    return data
+  }
+  
+  dataDecrypt(data){
+    return data
   }
 
   public mainUrl: string = "http://metabolicapp.azurewebsites.net/patient/";

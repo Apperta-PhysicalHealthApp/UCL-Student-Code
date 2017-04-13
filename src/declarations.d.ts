@@ -12,3 +12,6 @@
   https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html
 */
 declare module '*';
+declare module 'pouchdb-adapter-cordova-sqlite';
+declare module 'crypto-pouch';
+// declare module 'cordovaSqlitePlugin';

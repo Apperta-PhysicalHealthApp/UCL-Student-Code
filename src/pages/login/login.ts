@@ -46,6 +46,7 @@ export class LoginPage {
     this.showLoading()
 
     this.auth.initDB();
+    
 
 
     let link = this.auth.mainUrl + 'login/';
@@ -95,6 +96,7 @@ export class LoginPage {
         this.loading.dismiss();
 
         this.auth._db.get('credentials').then(doc => {
+
           if(doc.username == this.registerCredentials.username && doc.password == this.registerCredentials.password){
               this.navCtrl.setRoot(HomePage);
           }else{
@@ -105,6 +107,7 @@ export class LoginPage {
             });
             alert.present(prompt);
           }
+          
         })
         .catch(err => {
             let alert = this.alertCtrl.create({
