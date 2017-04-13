@@ -32,6 +32,8 @@ export class DomainResult {
   allItems = [];
   allDates = [];
   name: string;
+  loading: any;
+  testResult:any;
 
   link = this.auth.mainUrl + 'tests/getbytest/';
   linkAll = this.auth.mainUrl + "tests/getbytest/complete/";
@@ -39,25 +41,38 @@ export class DomainResult {
   constructor(private navCtrl: NavController, private http: Http, public navParams: NavParams,private alertCtrl: AlertController, 
               private loadingCtrl: LoadingController, private auth: Auth) {
 
+
     this.testType = this.navParams.get('testType');         //recieve data from domainPage using NavParams
     this.name = this.navParams.get('name');
 
-    this.start = 0;                                         //Position and ammount of tests which are being
-    this.count = 15;                                        //requested from the database
-    
-    this.values = JSON.stringify({start: this.start, count: this.count, test_type: this.testType});
+    if(this.auth.online){
 
-    this.http.post(this.link, this.values).map(res => res.json()).subscribe(      //request a certain ammount from said position
-      (data) => {                                                                 //of tests from the database
+        this.start = 0;                                         //Position and ammount of tests which are being
+        this.count = 15;                                        //requested from the database
+        
+        this.values = JSON.stringify({start: this.start, count: this.count, test_type: this.testType});
 
-        for (let i = 0; i < Math.min(this.count, data.length); i++) {             //if there are less tests than requested,
-          this.items.push(data[i]);                                               //display only the available ones 
-        }
+        this.http.post(this.link, this.values).map(res => res.json()).subscribe(      //request a certain ammount from said position
+          (data) => {                                                                 //of tests from the database
 
-      },
-      err => {
-        this.showError(err);
-      })
+            for (let i = 0; i < Math.min(this.count, data.length); i++) {             //if there are less tests than requested,
+              this.items.push(data[i]);                                               //display only the available ones 
+            }
+            
+            this.auth.add(data.splice(0,2), "domain " + this.testType)
+            
+          },
+          err => {
+            this.showError(err);
+          })
+
+      }else{
+          this.auth.retrieve("domain " + this.testType).then(doc => {
+            this.items = doc;
+          })
+      }
+
+      if(this.auth.online){
 
       let valuesAll = JSON.stringify({start: 0, count: 100, test_type: this.testType});
                                                 
@@ -117,6 +132,8 @@ export class DomainResult {
       err => {
         // this.showError(err);
       })
+
+    }
   }
 
   doInfinite(infiniteScroll) {                                                      //request tests on reaching the bottom
@@ -149,23 +166,56 @@ export class DomainResult {
       }, 500); 
     }
 
-    sendToViewTest(id){                                            //Send user to viewTest page along with the test id
+    sendToViewTest(id){
+    
+    if(id == -1){
+      return;
+    }
+
+    if(this.auth.online){
+
+    this.showLoading();
 
     setTimeout(() => {
 
-      let address = this.auth.mainUrl + 'tests/get/';
-      let payload = JSON.stringify({id: id})    
+      let link = this.auth.mainUrl + 'tests/get/';
+      let values = JSON.stringify({id: id})    
 
-      this.http.post(address, payload).map(res => res.json()).subscribe(
+      this.http.post(link, values).map(res => res.json()).subscribe(
         (data) => {
 
-          this.navCtrl.push(viewTest, {result: data});
+          this.testResult = data;
+          this.loading.dismiss();
+          this.navCtrl.push(viewTest, {result: this.testResult});
             
         },
         err => {
+            this.loading.dismiss();
             this.showError(err);
         })
+
      })
+    }else{
+      this.auth.getId(id).then(result => {
+        if(result != undefined){
+          this.navCtrl.push(viewTest, {result: result});
+        }else{
+          let alert = this.alertCtrl.create({
+            title: 'Status',
+            subTitle: "No data for test",
+            buttons: ['OK']
+          });
+          alert.present(prompt);
+        }
+      })
+    }
+  }
+
+  showLoading() {                                 //Loading message using LoadingController
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    this.loading.present();
   }
 
   showError(text) {

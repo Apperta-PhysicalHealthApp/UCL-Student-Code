@@ -54,23 +54,97 @@ export class HomePage {
     let valuesUpcoming = JSON.stringify({start: start, count: count});
     //let values = JSON.stringify({last_updated: '2017-03-01', verbose: true})
 
+    if(this.auth.online){
 
-    this.http.post(linkUpcoming, valuesUpcoming).map(res => res.json()).subscribe(
-      (data) => {
-          this.items = data;
-          this.items = this.items.slice(0, 2);
-      },
+      this.http.post(linkUpcoming, valuesUpcoming).map(res => res.json()).subscribe(
+        (data) => {
+            this.items = data;
+            this.items = this.items.slice(0, 2);
+
+            this.auth.add(this.items, "upcomingTwo");
+        },
+        err => {
+          this.showError(err);
+        }
+      )
+
+    }else{
+        this.auth.retrieve("upcomingTwo").then(data => { this.items = data })
+    }
+
+    if(this.auth.online){
+
+      this.http.get(link).map(res => res.json()).subscribe(
+        (data) => {
+          this.initWheelNav(data);
+          this.auth.add(data, "wheelTests");
+        },
       err => {
         this.showError(err);
-      }
-    )
+      })
+    }else{
+        
+      this.auth.retrieve("wheelTests").then(data => {
+          this.initWheelNav(data);      
+      })
+    }
 
 
-    this.http.get(link).map(res => res.json()).subscribe(
-      (data) => {
+  }
+
+  ionViewDidEnter(){
+    this.wheelNav();
+  }
+
+  sendToViewTest(id){
+    
+    if(id == -1){
+      return;
+    }
+
+    if(this.auth.online){
+
+    this.showLoading();
+
+    setTimeout(() => {
+
+      let link = this.auth.mainUrl + 'tests/get/';
+      let values = JSON.stringify({id: id})    
+
+      this.http.post(link, values).map(res => res.json()).subscribe(
+        (data) => {
+
+          this.testResult = data;
+          this.loading.dismiss();
+          this.navCtrl.push(viewTest, {result: this.testResult});
+            
+        },
+        err => {
+            this.loading.dismiss();
+            this.showError(err);
+        })
+
+     })
+    }else{
+      this.auth.getId(id).then(result => {
+        if(result != undefined){
+          this.navCtrl.push(viewTest, {result: result});
+        }else{
+          let alert = this.alertCtrl.create({
+            title: 'Status',
+            subTitle: "No data for test",
+            buttons: ['OK']
+          });
+          alert.present(prompt);
+        }
+      })
+    }
+  }
 
 
-        for(let i = 0; i < data.length; i++){
+  initWheelNav(data){
+
+    for(let i = 0; i < data.length; i++){
 
             let testDate = new Date(String(data[i].date));
 
@@ -139,36 +213,11 @@ export class HomePage {
 
           this.wheeln.removeWheel();
           this.wheeln.colors = this.allColors;
-          this.wheeln = new wheelnav("divWheelnav");
-          this.wheeln.maxPercent = 1.08;
-          this.wheeln.slicePathAttr = { stroke: 'white', 'stroke-width': 2 };
-          this.wheeln.colors = this.allColors;
-          this.wheeln.createWheel(["Cholest.", "Lipids", "Prolactin", "Renal F", "Blood Pr.","ECG", "BMI", "Blood Sug.",
-          "Hba1c", "Liver F"]);
-
-    this.wheeln.navItems[0].navItem.click(() => { this.sendToViewTest(this.cholesterol.id) })
-    this.wheeln.navItems[1].navItem.click(() => { this.sendToViewTest(this.lipids.id) })
-    this.wheeln.navItems[2].navItem.click(() => { this.sendToViewTest(this.prolactin.id) })
-    this.wheeln.navItems[3].navItem.click(() => { this.sendToViewTest(this.renal.id) })
-    this.wheeln.navItems[4].navItem.click(() => { this.sendToViewTest(this.blood.id) })
-    this.wheeln.navItems[5].navItem.click(() => { this.sendToViewTest(this.ecg.id) })
-    this.wheeln.navItems[6].navItem.click(() => { this.sendToViewTest(this.bmi.id) })
-    this.wheeln.navItems[7].navItem.click(() => { this.sendToViewTest(this.sugar.id) })
-    this.wheeln.navItems[8].navItem.click(() => { this.sendToViewTest(this.hba1c.id) })
-    this.wheeln.navItems[9].navItem.click(() => { this.sendToViewTest(this.liver.id) })
-
+          this.wheelNav();
         }
-
-      },
-      err => {
-        this.showError(err);
-      })
-
-
   }
 
-  ionViewDidEnter(){
-
+  wheelNav(){
     this.wheeln = new wheelnav("divWheelnav");
     this.wheeln.maxPercent = 1.08;
     this.wheeln.slicePathAttr = { stroke: 'white', 'stroke-width': 2 };
@@ -186,48 +235,6 @@ export class HomePage {
     this.wheeln.navItems[7].navItem.click(() => { this.sendToViewTest(this.sugar.id) })
     this.wheeln.navItems[8].navItem.click(() => { this.sendToViewTest(this.hba1c.id) })
     this.wheeln.navItems[9].navItem.click(() => { this.sendToViewTest(this.liver.id) })
-    // console.log(Object.getOwnPropertyNames(wheeln));
-
-  }
-
-  sendToViewTest(id){
-
-      this.auth._db.get('credentials').then( doc => {
-        let alert = this.alertCtrl.create({
-      title: 'doc',
-      subTitle: JSON.stringify(doc),
-      buttons: ['OK']
-    });
-    alert.present(prompt);
-      })
- 
-    
-    if(id == -1){
-      return;
-    }
-
-    this.showLoading();
-
-    setTimeout(() => {
-
-
-      let link = this.auth.mainUrl + 'tests/get/';
-      let values = JSON.stringify({id: id})    
-
-      this.http.post(link, values).map(res => res.json()).subscribe(
-        (data) => {
-
-          this.testResult = data;
-          this.loading.dismiss();
-          this.navCtrl.push(viewTest, {result: this.testResult});
-            
-        },
-        err => {
-            this.loading.dismiss();
-            this.showError(err);
-        })
-
-     })
   }
 
   public logout(){

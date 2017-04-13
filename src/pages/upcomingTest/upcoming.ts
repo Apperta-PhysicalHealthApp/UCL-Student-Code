@@ -18,12 +18,15 @@ export class Upcoming {
   start: number;
   count: number;
   values: any;
+  loading: any;
 
   link = this.auth.mainUrl + 'tests/getbynext/';
   
 
   constructor(private navCtrl: NavController, private auth: Auth, private http: Http, private alertCtrl: AlertController, 
               private loadingCtrl: LoadingController) {
+
+    if(this.auth.online){
 
     this.start = 0;                                               //Position and ammount of tests which are being
     this.count = 15;                                              //requested from the database
@@ -37,65 +40,105 @@ export class Upcoming {
           this.items.push(data[i]);                                             //display only da available ones
         }
 
+        this.auth.add(data.slice(0,2), "upcoming")
+
       },
       err => {
         this.showError(err);
       })
-
+    }else{
+        this.auth.retrieve("upcoming").then(doc => {
+          this.items = doc;
+        })
+    }
   }
 
     doInfinite(infiniteScroll) {                                              //request tests on reaching the bottom
                                                                               //of the page
-      this.start = this.start + this.count;
-      this.values = JSON.stringify({start: this.start, count: this.count});
+      if(this.auth.online){
+      
+        this.start = this.start + this.count;
+        this.values = JSON.stringify({start: this.start, count: this.count});
 
-      setTimeout(() => {
+        setTimeout(() => {
 
-        this.http.post(this.link, this.values).map(res => res.json()).subscribe(
-          (data) => {
+          this.http.post(this.link, this.values).map(res => res.json()).subscribe(
+            (data) => {
 
-          if(data.length == 0){
-            infiniteScroll.enable(false);                               //if there are no more tests,
-          }                                                             //disable the infinite scroll
+            if(data.length == 0){
+              infiniteScroll.enable(false);                               //if there are no more tests,
+            }                                                             //disable the infinite scroll
 
-          for (let i = 0; i < Math.min(this.count, data.length); i++) {
-              this.items.push(data[i]);
-          }
+            for (let i = 0; i < Math.min(this.count, data.length); i++) {
+                this.items.push(data[i]);
+            }
 
-          this.start = this.start - this.count + Math.min(this.count, data.length)      //Adjust the position at which
-                                                                                        //tests are being requested from the database
-          },
-          err => {
-            this.start = this.start - this.count;
-            this.showError(err);
-            // this.showError(JSON.stringify(err));
-          })
+            this.start = this.start - this.count + Math.min(this.count, data.length)      //Adjust the position at which
+                                                                                          //tests are being requested from the database
+            },
+            err => {
+              this.start = this.start - this.count;
+              this.showError(err);
+              // this.showError(JSON.stringify(err));
+            })
 
-        infiniteScroll.complete();
-      }, 500);
+          infiniteScroll.complete();
+        }, 500);
+      }
     }
 
 
-    sendToViewTest(id){                                                     //Send user to viewTest page along with the test id
+    sendToViewTest(id){
+    
+    if(id == -1){
+      return;
+    }
+
+    if(this.auth.online){
+
+    this.showLoading();
 
     setTimeout(() => {
 
-      let address = this.auth.mainUrl + 'tests/get/';
-      let payload = JSON.stringify({id: id})    
+      let link = this.auth.mainUrl + 'tests/get/';
+      let values = JSON.stringify({id: id})    
 
-      this.http.post(address, payload).map(res => res.json()).subscribe(
+      this.http.post(link, values).map(res => res.json()).subscribe(
         (data) => {
 
           this.testResult = data;
+          this.loading.dismiss();
           this.navCtrl.push(viewTest, {result: this.testResult});
             
         },
         err => {
-            // let error = JSON.stringify(err);
+            this.loading.dismiss();
             this.showError(err);
         })
 
      })
+    }else{
+      this.auth.getId(id).then(result => {
+        if(result != undefined){
+          this.navCtrl.push(viewTest, {result: result});
+        }else{
+          let alert = this.alertCtrl.create({
+            title: 'Status',
+            subTitle: "No data for test",
+            buttons: ['OK']
+          });
+          alert.present(prompt);
+        }
+      })
+    }
+  }
+
+  showLoading() {                                 //Loading message using LoadingController
+    let loading;
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    this.loading.present();
   }
 
   showError(text) {

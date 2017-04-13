@@ -35,8 +35,66 @@ export class Auth {
         this._db.crypto("password");
     }
 
-  add(credentials){
-    return this._db.put(credentials);
+  add(data, id){
+    this._db.get(id).then(doc => {
+      if(JSON.stringify(doc.data) != JSON.stringify(data)){
+          doc.data = data;
+          return this._db.put(doc);
+      }
+    })
+    .catch(() => {
+          return this._db.put({_id: id, data: data});
+    })
+  }
+
+  retrieve(id){
+    return this._db.get(id).then(doc => {
+      return doc.data;
+    })
+    .catch(() => {
+        let alert = this.alertCtrl.create({
+          title: 'No Data on this device',
+          subTitle: "Please connect to the internet to recieve data",
+          buttons: ['OK']
+        });
+        alert.present(prompt);
+    })
+  }
+
+
+  getId(data_id) {
+    let _idswheretestsarestored = ['wheelTests', 'upcomingTwo', "latest", "upcoming", "domain CHOLESTEROL", "domain LIPIDS", "domain PROLACTIN", "domain PROLACTIN", "domain RENAL", "domain BLOOD", "domain ECG", "domain BMI", "domain FBSUGAR", "domain HBA1C",  "domain LIVER"];
+    let result = undefined;
+    let promises = []
+
+    for(let i = 0; i<_idswheretestsarestored.length; i++) {
+      promises.push(this.searchDBforID(_idswheretestsarestored[i], data_id))
+    }
+
+    return Promise.all(promises).then((test) => {
+
+      for(let i = 0; i < test.length; i++ ){
+          if(test[i] != undefined) return result = test[i];
+      }
+
+      return result;
+
+    }).catch((err) => {/ Do nothing /});
+  }
+
+  searchDBforID(db_id, data_id){
+    return this._db.get(db_id).then((doc) => {
+        let tests = doc.data;
+
+        for (let i = 0; i < tests.length; i++) {
+          if (tests[i].id == data_id) return tests[i];
+        }
+        return undefined;
+      }).catch(() => {
+
+        return undefined;
+
+      })
   }
 
   db_login(username, password){
@@ -94,6 +152,8 @@ export class Auth {
   dataDecrypt(data){
     return data
   }
+
+  
 
   public mainUrl: string = "http://metabolicapp.azurewebsites.net/patient/";
   public online: boolean;
