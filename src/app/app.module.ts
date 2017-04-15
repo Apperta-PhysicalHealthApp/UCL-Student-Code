@@ -12,6 +12,7 @@ import { Pending } from '../pages/pending/pending';
 import { viewTest } from '../pages/viewTest/viewTest';
 import { DomainPage } from '../pages/domainPage/domainPage';
 import { DomainResult } from '../pages/domainResult/domainResult';
+import { mainDomain } from '../pages/mainDomain/mainDomain';
 import { nhsChoices } from '../pages/nhsChoices/nhsChoices';
 import { Network } from '@ionic-native/network';
 
@@ -29,7 +30,8 @@ import { Network } from '@ionic-native/network';
     viewTest,
     DomainPage,
     DomainResult,
-    nhsChoices
+    nhsChoices,
+    mainDomain
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -47,7 +49,8 @@ import { Network } from '@ionic-native/network';
     viewTest,
     DomainPage,
     DomainResult,
-    nhsChoices
+    nhsChoices,
+    mainDomain
   ],
   providers: [Auth, Network]
 })

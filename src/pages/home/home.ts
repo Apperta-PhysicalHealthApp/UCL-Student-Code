@@ -6,7 +6,7 @@ import {Latest} from '../latestTestResults/latest';
 import {Upcoming} from '../upcomingTest/upcoming';
 import { Http, Headers } from '@angular/http';
 import { viewTest } from '../viewTest/viewTest';
-import { DomainPage } from '../domainPage/domainPage';
+import { mainDomain } from '../mainDomain/mainDomain';
 
 declare var wheelnav: any;
 
@@ -246,7 +246,7 @@ export class HomePage {
 
   sendViewLatest(){
 
-    this.navCtrl.push(DomainPage)
+    this.navCtrl.push(mainDomain)
   }
   sendViewUpcomming(){
 

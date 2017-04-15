@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar color="dark">
     <ion-title>
-      Past Test Categories
+      {{ name }}
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -22,10 +22,6 @@
                 </button>
             </ion-col>
         </ion-row>
-
-        <button ion-item color="light" (click)="loadAll()">
-            View All Tests
-        </button> 
     </ion-list>
  
 </ion-content>

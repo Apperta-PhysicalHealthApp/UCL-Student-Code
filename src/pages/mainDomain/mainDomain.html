@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>
+      Categories
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="name" padding>
+
+    <ion-list inset>
+
+        <!-- Cycle through "items" and display each items's name. -->
+        
+        <ion-row *ngFor="let item of domains">
+            <ion-col>
+                <button width ion-item (click)="sendToDomain(item.name, item.tests)">    
+                    {{ item.name }}  <ion-icon style="float: right" ios="ios-arrow-forward" md="md-arrow-forward"></ion-icon>
+                </button>
+            </ion-col>
+        </ion-row>
+
+        <button ion-item color="light" (click)="loadAll()">
+            View All Tests
+        </button> 
+    </ion-list>
+ 
+</ion-content>
+
+

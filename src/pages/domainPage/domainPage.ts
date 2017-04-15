@@ -15,21 +15,14 @@ import { Latest } from '../latestTestResults/latest';
 
 export class DomainPage {
 
-    items = [                                                 //Items which are being displayed in the HTML 
-        {name: 'Fasting cholesterol', id: 'CHOLESTEROL'},
-        {name: 'Lipids', id: 'LIPIDS'},
-        {name: 'Prolactin', id: 'PROLACTIN'},
-        {name: 'Renal Functions', id: 'RENAL'},
-        {name: 'Blood Pressure', id: 'BLOOD'},
-        {name: 'ECGs', id: 'ECG'},
-        {name: 'BMI', id: 'BMI'},
-        {name: 'Fasting Blood Sugar', id: 'FBSUGAR'},
-        {name: 'HbA1c', id: 'HBA1C'},
-        {name: 'Liver Functions', id: 'LIVER'},
-    ];
+  name: string;
+  items: any;
 
   
-  constructor(private navCtrl: NavController, private http: Http, private alertCtrl: AlertController) {
+  constructor(private navCtrl: NavController, public navParams: NavParams, private http: Http, private alertCtrl: AlertController) {
+
+    this.items = this.navParams.get('tests');         //recieve data from mainDomain page using NavParams
+    this.name = this.navParams.get('domainName');
 
   }
 
