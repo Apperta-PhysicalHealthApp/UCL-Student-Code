@@ -253,6 +253,8 @@ export class Auth {
 
       let link = this.mainUrl +  'logout/';
 
+      if(this.online){
+
       this.http.get(link).map(res => res.json()).subscribe(
         (data) => {
 
@@ -284,6 +286,10 @@ export class Auth {
               observer.next(true);
               observer.complete();
         })
+    }else{
+      observer.next(true);
+      observer.complete();
+    }
     })
   }
 

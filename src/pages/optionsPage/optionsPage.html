@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>
+      Options
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="name" padding>
+    <ion-card>
+  <ion-card-header>
+    User Information
+  </ion-card-header>
+  <ion-card-content>
+        <ion-icon name="contact"></ion-icon> {{ name }}
+        <br/>
+        <ion-icon name="flask"></ion-icon> {{ clinician }}
+        <br/>
+        <button *ngIf="isOnline" ion-button icon-left (click)="changeClinician()">
+            <ion-icon name="warning"></ion-icon>
+            Change Clinician
+        </button>
+
+  </ion-card-content>
+</ion-card>
+</ion-content>
+

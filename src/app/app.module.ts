@@ -15,6 +15,9 @@ import { DomainResult } from '../pages/domainResult/domainResult';
 import { mainDomain } from '../pages/mainDomain/mainDomain';
 import { nhsChoices } from '../pages/nhsChoices/nhsChoices';
 import { Network } from '@ionic-native/network';
+import { DatePicker } from '@ionic-native/date-picker';
+import {Calendar} from '@ionic-native/calendar';
+import { OptionsPage } from '../pages/optionsPage/optionsPage';
 
 
 @NgModule({
@@ -31,7 +34,8 @@ import { Network } from '@ionic-native/network';
     DomainPage,
     DomainResult,
     nhsChoices,
-    mainDomain
+    mainDomain,
+    OptionsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -50,8 +54,9 @@ import { Network } from '@ionic-native/network';
     DomainPage,
     DomainResult,
     nhsChoices,
-    mainDomain
+    mainDomain,
+    OptionsPage
   ],
-  providers: [Auth, Network]
+  providers: [Auth, Network, Calendar, DatePicker]
 })
 export class AppModule {}

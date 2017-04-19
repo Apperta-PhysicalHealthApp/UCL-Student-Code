@@ -42,25 +42,6 @@ export class LoginPage {
                           alert.present(prompt);
                   }); 
                   
-
-                  // LocalNotifications.getAllTriggered().then(doc => {
-
-                  //   let alert = this.alertCtrl.create({
-                  //         title: "doc",
-                  //         subTitle: JSON.stringify(doc),
-                  //         buttons: ['OK']
-                  //       });
-                  //       alert.present(prompt);
-
-                  //   for(let i = 0; i < doc.length; i++){
-                  //       let alert = this.alertCtrl.create({
-                  //         title: doc[i].title,
-                  //         subTitle: doc[i].text,
-                  //         buttons: ['OK']
-                  //       });
-                  //       alert.present(prompt);
-                  //   }
-                  // })
               }
 
   public createAccount(){

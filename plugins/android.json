@@ -36,10 +36,19 @@
         },
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "com.ionicframework.metabolicapp818736"
+        },
+        "cordova-plugin-datepicker": {
+            "PACKAGE_NAME": "com.ionicframework.metabolicapp818736"
+        },
+        "cordova-plugin-calendar": {
+            "PACKAGE_NAME": "com.ionicframework.metabolicapp818736"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-app-event": {
+            "PACKAGE_NAME": "com.ionicframework.metabolicapp818736"
+        },
+        "cordova-plugin-compat": {
             "PACKAGE_NAME": "com.ionicframework.metabolicapp818736"
         }
     }

@@ -1,10 +1,15 @@
 <ion-header>
   <ion-navbar color="dark">
-    <ion-title>
-     Janssen J
+    <ion-title class="title">
+     Home
     </ion-title>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="options()">
+        <ion-icon name="build"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-buttons end>
-      <button ion-button (click)="logout()">
+      <button ion-button icon-only (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </button>
     </ion-buttons>

@@ -9,6 +9,7 @@ import { viewTest } from '../viewTest/viewTest';
 import { mainDomain } from '../mainDomain/mainDomain';
 import { LocalNotifications } from 'ionic-native';
 import { Platform } from 'ionic-angular';
+import { OptionsPage } from '../optionsPage/optionsPage';
 
 declare var wheelnav: any;
 
@@ -248,12 +249,14 @@ export class HomePage {
     })
   }
 
-  sendViewLatest(){
+  public options(){
+    this.navCtrl.push(OptionsPage);
+  }
 
+  sendViewLatest(){
     this.navCtrl.push(mainDomain)
   }
   sendViewUpcomming(){
-
     this.navCtrl.push(Upcoming)
   }
 
