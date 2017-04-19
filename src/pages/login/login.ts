@@ -7,6 +7,7 @@ import { Request } from '../createRequest/request';
 import { Pending } from '../pending/pending';
 import {Http, Headers} from '@angular/http';
 import { Network } from '@ionic-native/network';
+import { LocalNotifications } from 'ionic-native';
 
 
 @Component({
@@ -26,11 +27,40 @@ export class LoginPage {
               private loadingCtrl: LoadingController,
               private http: Http, private network: Network) 
               {
-                  this.auth.online = this.auth.checkOnline();
 
                   this.network.onchange().subscribe(() => {
                       this.auth.online = this.auth.checkOnline();
                   });
+
+
+                  LocalNotifications.on("click", (notification, state) => {
+                          let alert = alertCtrl.create({
+                              title: "Notification Clicked",
+                              subTitle: "You just clicked the scheduled notification",
+                              buttons: ["OK"]
+                          });
+                          alert.present(prompt);
+                  }); 
+                  
+
+                  // LocalNotifications.getAllTriggered().then(doc => {
+
+                  //   let alert = this.alertCtrl.create({
+                  //         title: "doc",
+                  //         subTitle: JSON.stringify(doc),
+                  //         buttons: ['OK']
+                  //       });
+                  //       alert.present(prompt);
+
+                  //   for(let i = 0; i < doc.length; i++){
+                  //       let alert = this.alertCtrl.create({
+                  //         title: doc[i].title,
+                  //         subTitle: doc[i].text,
+                  //         buttons: ['OK']
+                  //       });
+                  //       alert.present(prompt);
+                  //   }
+                  // })
               }
 
   public createAccount(){

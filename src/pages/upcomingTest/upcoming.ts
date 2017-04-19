@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, Platform } from 'ionic-angular';
 import {Auth} from '../../providers/auth';
 import {LoginPage} from '../login/login';
 import {Http} from '@angular/http';
@@ -24,7 +24,7 @@ export class Upcoming {
   
 
   constructor(private navCtrl: NavController, private auth: Auth, private http: Http, private alertCtrl: AlertController, 
-              private loadingCtrl: LoadingController) {
+              private loadingCtrl: LoadingController, private platform: Platform) {
 
     if(this.auth.online){
 

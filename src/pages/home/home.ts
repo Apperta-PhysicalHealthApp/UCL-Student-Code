@@ -7,6 +7,8 @@ import {Upcoming} from '../upcomingTest/upcoming';
 import { Http, Headers } from '@angular/http';
 import { viewTest } from '../viewTest/viewTest';
 import { mainDomain } from '../mainDomain/mainDomain';
+import { LocalNotifications } from 'ionic-native';
+import { Platform } from 'ionic-angular';
 
 declare var wheelnav: any;
 
@@ -40,7 +42,7 @@ export class HomePage {
   currentDate: Date = new Date();
 
   constructor(public navCtrl: NavController, private alertCtrl: AlertController, 
-              private loadingCtrl: LoadingController, private auth: Auth, private http: Http) {
+              private loadingCtrl: LoadingController, private auth: Auth, private http: Http, private platform: Platform) {
     // let info = this.auth.getUserInfo();
     // this.username = info.name;
       
@@ -55,18 +57,19 @@ export class HomePage {
     //let values = JSON.stringify({last_updated: '2017-03-01', verbose: true})
 
     if(this.auth.online){
+      // platform.ready().then(() => {
+        this.http.post(linkUpcoming, valuesUpcoming).map(res => res.json()).subscribe(
+          (data) => {
+              this.items = data;
+              this.items = this.items.slice(0, 2);
 
-      this.http.post(linkUpcoming, valuesUpcoming).map(res => res.json()).subscribe(
-        (data) => {
-            this.items = data;
-            this.items = this.items.slice(0, 2);
-
-            this.auth.add(this.items, "upcomingTwo");
-        },
-        err => {
-          this.showError(err);
-        }
-      )
+              this.auth.add(this.items, "upcomingTwo");
+          },
+          err => {
+            this.showError(err);
+          }
+        )
+      // });
 
     }else{
         this.auth.retrieve("upcomingTwo").then(data => { this.items = data })
@@ -74,16 +77,17 @@ export class HomePage {
 
     if(this.auth.online){
 
-      this.http.get(link).map(res => res.json()).subscribe(
-        (data) => {
-          this.initWheelNav(data);
-          this.auth.add(data, "wheelTests");
-        },
-      err => {
-        this.showError(err);
-      })
+      // platform.ready().then(() => {
+        this.http.get(link).map(res => res.json()).subscribe(
+          (data) => {
+            this.initWheelNav(data);
+            this.auth.add(data, "wheelTests");
+          },
+        err => {
+          this.showError(err);
+        })
+      // });
     }else{
-        
       this.auth.retrieve("wheelTests").then(data => {
           this.initWheelNav(data);      
       })

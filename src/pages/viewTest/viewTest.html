@@ -21,5 +21,18 @@
     <p>Date created: {{ param.date_created }} </p>
   </ion-card-content>
 </ion-card>
+
+ <ion-card *ngIf="isNew">
+    <ion-card-header>
+      Schedule
+    </ion-card-header>
+    <ion-card-content>
+      <h3>Schedule Notification Reminder</h3>
+      <br/>
+      <button width ion-button (click)="makeBooking()">Make a booking</button>
+      <br/>
+      <button width ion-button (click)="addToCalendar()">Add To Calendar</button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
 
