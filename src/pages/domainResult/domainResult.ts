@@ -94,7 +94,9 @@ export class DomainResult {
          else{
            this.allDates.push(" "); 
          } 
-        }                           
+        }            
+
+        /* Chart is from: http://www.chartjs.org/ */               
 
         this.lineChart = new Chart(this.lineCanvas.nativeElement, {                  //line chart inicialisation and options
  
@@ -172,7 +174,7 @@ export class DomainResult {
       return;
     }
 
-    if(this.auth.online){
+    if(this.auth.online){                                       //Check if user is online
 
     this.showLoading();
 
@@ -196,7 +198,7 @@ export class DomainResult {
 
      })
     }else{
-      this.auth.getId(id).then(result => {
+      this.auth.getId(id).then(result => {                      //get test id and send to ViewTest page with the clicked test
         if(result != undefined){
           this.navCtrl.push(viewTest, {result: result});
         }else{

@@ -10,6 +10,8 @@ import cordovaSqlitePlugin from 'pouchdb-adapter-cordova-sqlite';
 import { Network } from '@ionic-native/network';
 import 'rxjs/add/operator/map';
 
+/* Information gathered from: https://devdactic.com/login-ionic-2/ */
+
 export class User {
   name: string;
   email: string;
@@ -27,6 +29,10 @@ export class Auth {
   public _db;
   private _credentials;
   local: any;
+
+  /* PouchDB is from: https://pouchdb.com/ */
+  /* pouchdb-adapter-cordova-sqlite is from: https://github.com/nolanlawson/pouchdb-adapter-cordova-sqlite */
+  /* Crypto-Pouch is from: https://github.com/calvinmetcalf/crypto-pouch */
 
   initDB() {
         PouchDB.plugin(cordovaSqlitePlugin);
@@ -162,27 +168,6 @@ export class Auth {
 
   }
 
-  // public login(credentials){
-
-  //   // let link = 'http://13.81.70.148:8000/patient/login/';
-  //   // let values = JSON.stringify({username: credentials.username,
-  //   //                               password: credentials.password});
-
-    
-  //   if(credentials.username === null || credentials.password === null){
-  //     return Observable.throw("Please insert email and password.")
-  //   }else{
-  //     //return this.http.post
-
-  //     return Observable.create(observer => {
-  //       let access = (credentials.password === "pass", credentials.email ="email")
-  //       this.currentUser = new User('Kiran/Yihang', 'Admin@gmail.com')
-  //       observer.next(access);
-  //       observer.complete();
-  //     })
-  //   }
-  // }
-
   public register(credentials){
     if (credentials.email === null || credentials.password === null || credentials.fname === null ||
         credentials.lname === null || credentials.DateOfBirth === null || credentials.NHS === null) {
@@ -195,9 +180,6 @@ export class Auth {
     }
   }
 
-  // public getUserInfo() : User {
-  //   return this.currentUser;
-  // }
 
   public dateChange(date){
     let day = date.slice(8, 10);

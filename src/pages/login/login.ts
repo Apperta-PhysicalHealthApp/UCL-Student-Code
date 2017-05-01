@@ -15,6 +15,9 @@ import { LocalNotifications } from 'ionic-native';
   templateUrl: 'login.html',
   
 })
+
+/* Information gathered from: https://www.raymondcamden.com/2016/11/04/an-example-of-the-ionic-auth-service-with-ionic-2 */
+
 export class LoginPage {
 
   loading: Loading;
@@ -128,17 +131,6 @@ export class LoginPage {
             });
             alert.present(prompt);
         })
-
-          // if(this.auth.loginOffline(this.registerCredentials.username, this.registerCredentials.password)){
-          //   this.navCtrl.setRoot(HomePage);
-          // }else{
-          //   let alert = this.alertCtrl.create({
-          //     title: 'Status',
-          //     subTitle: "Credentials do not match those stored on offline system",
-          //     buttons: ['OK']
-          //   });
-          //   alert.present(prompt);
-          // }
       }
   }
 

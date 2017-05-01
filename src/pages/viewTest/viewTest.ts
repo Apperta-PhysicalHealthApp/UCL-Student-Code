@@ -34,7 +34,7 @@ export class viewTest {
   }
 
   public makeBooking(){
-
+    window.open('http://www.nhs.uk/NHSEngland/AboutNHSservices/doctors/Pages/gp-appointments.aspx', '_system');
   }
 
   public addToCalendar(){

@@ -44,8 +44,6 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, private alertCtrl: AlertController, 
               private loadingCtrl: LoadingController, private auth: Auth, private http: Http, private platform: Platform) {
-    // let info = this.auth.getUserInfo();
-    // this.username = info.name;
       
 
     let link = this.auth.mainUrl + 'tests/upcoming/';
@@ -55,39 +53,37 @@ export class HomePage {
     let count = 2;                                              //requested from the database
 
     let valuesUpcoming = JSON.stringify({start: start, count: count});
-    //let values = JSON.stringify({last_updated: '2017-03-01', verbose: true})
 
-    if(this.auth.online){
-      // platform.ready().then(() => {
+    if(this.auth.online){                                                       //Check if user is online
+
         this.http.post(linkUpcoming, valuesUpcoming).map(res => res.json()).subscribe(
           (data) => {
               this.items = data;
               this.items = this.items.slice(0, 2);
 
-              this.auth.add(this.items, "upcomingTwo");
+              this.auth.add(this.items, "upcomingTwo");                                   //add data to local database
           },
           err => {
-            this.showError(err);
+            // this.showError(err);
           }
         )
-      // });
 
-    }else{
+
+    }else{                                                                                //if not online, get data from local database
         this.auth.retrieve("upcomingTwo").then(data => { this.items = data })
     }
 
     if(this.auth.online){
 
-      // platform.ready().then(() => {
         this.http.get(link).map(res => res.json()).subscribe(
           (data) => {
             this.initWheelNav(data);
             this.auth.add(data, "wheelTests");
           },
         err => {
-          this.showError(err);
+          // this.showError(err);
         })
-      // });
+
     }else{
       this.auth.retrieve("wheelTests").then(data => {
           this.initWheelNav(data);      
@@ -126,7 +122,7 @@ export class HomePage {
         },
         err => {
             this.loading.dismiss();
-            this.showError(err);
+            // this.showError(err);
         })
 
      })
@@ -146,6 +142,7 @@ export class HomePage {
     }
   }
 
+  /* Wheelnav is from: http://wheelnavjs.softwaretailoring.net/ */
 
   initWheelNav(data){
 
@@ -153,14 +150,16 @@ export class HomePage {
 
             let testDate = new Date(String(data[i].date));
 
-            let timeDif = Math.abs(this.currentDate.getTime() - testDate.getTime());
+            let timeDif = (testDate.getTime() - this.currentDate.getTime());
             let difDays = Math.ceil(timeDif/(1000 * 3600 * 24));
-
-            // this.showError(difDays);
 
             let colors;
 
-            if(difDays < 7){
+
+            if(difDays < 0){
+              colors = "#e5e5e5";
+            }
+            else if(difDays < 7){
               colors = "#6094a8";
             }
             else if(difDays < 30){

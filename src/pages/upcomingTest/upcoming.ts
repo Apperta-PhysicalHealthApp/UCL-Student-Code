@@ -44,7 +44,7 @@ export class Upcoming {
 
       },
       err => {
-        this.showError(err);
+        // this.showError(err);
       })
     }else{
         this.auth.retrieve("upcoming").then(doc => {
@@ -78,7 +78,7 @@ export class Upcoming {
             },
             err => {
               this.start = this.start - this.count;
-              this.showError(err);
+              // this.showError(err);
               // this.showError(JSON.stringify(err));
             })
 

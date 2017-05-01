@@ -43,7 +43,7 @@ export class Latest {
 
       },
       err => {
-        this.showError(err);
+        // this.showError(err);
       })
 
     }else{
@@ -79,7 +79,7 @@ export class Latest {
             },
             err => {
               this.start = this.start - this.count;
-              this.showError(err);
+              // this.showError(err);
             })
 
           infiniteScroll.complete();
@@ -94,11 +94,11 @@ export class Latest {
       return;
     }
 
-    if(this.auth.online){
+    if(this.auth.online){                                       //Check if user is online
 
     this.showLoading();
 
-    setTimeout(() => {
+    setTimeout(() => { 
 
       let link = this.auth.mainUrl + 'tests/get/';
       let values = JSON.stringify({id: id})    
@@ -118,7 +118,7 @@ export class Latest {
 
      })
     }else{
-      this.auth.getId(id).then(result => {
+      this.auth.getId(id).then(result => {                        //if not online, get id from local database
         if(result != undefined){
           this.navCtrl.push(viewTest, {result: result});
         }else{
